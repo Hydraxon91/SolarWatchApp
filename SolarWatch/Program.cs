@@ -1,3 +1,6 @@
+using SolarWatch.Context;
+using SolarWatch.Model;
+using SolarWatch.RepositoryPattern;
 using SolarWatch.Service;
 using WeatherApi.Service;
 
@@ -10,9 +13,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<SolarWatchContext>();
 builder.Services.AddSingleton<ILongitudeAndLatitudeProvider, OpenWeatherMapApi>();
 builder.Services.AddSingleton<ISunriseSunsetProvider, SunriseSunsetApi>();
 builder.Services.AddSingleton<IJsonProcessor, JsonProcessor>();
+// builder.Services.AddSingleton<ICityRepository, CityRepository>();
+// builder.Services.AddSingleton<ISunriseSunsetRepository, SunriseSunsetRepository>();
+
 
 var app = builder.Build();
 

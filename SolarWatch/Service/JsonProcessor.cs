@@ -6,7 +6,7 @@ namespace SolarWatch.Service;
 
 public class JsonProcessor : IJsonProcessor
 {
-    
+
     public Tuple<string, string> ProcessLongLat(string data)
     {
         JsonDocument json = JsonDocument.Parse(data);
@@ -16,27 +16,41 @@ public class JsonProcessor : IJsonProcessor
     }
 
     //SolarWatch5
-    public City ProcessCity(string data, int id)
+    public City ProcessCity(string data)
     {
         JsonDocument json = JsonDocument.Parse(data);
-        var name = json.RootElement[0].GetProperty("name").GetDouble().ToString();
-        var lat = json.RootElement[0].GetProperty("lat").GetDouble();
-        var lon = json.RootElement[0].GetProperty("lon").GetDouble();
-        var country = json.RootElement[0].GetProperty("country").GetDouble().ToString();
-        string? state = json.RootElement[0].GetProperty("state").GetDouble().ToString();
-
+        var element = json.RootElement[0];
+        var name = element.GetProperty("name").ToString();
+        var lat = element.GetProperty("lat").ToString();
+        var lon = element.GetProperty("lon").ToString();
+        var country = element.GetProperty("country").ToString();
+        string? state = element.TryGetProperty("state", out var stateProperty) ? stateProperty.ToString() : null;
+        
         return new City
         {
-            Id = id,
             Name = name,
             Latitude = lat,
             Longitude = lon,
             Country = country,
-            State = state
+            State = state,
         };
     }
 
-    public SolarWatch ProcessSunrise(string data)
+    public SunriseSunset ProcessSunriseSunset(string data, DateTime date, int cityId)
+    {
+        JsonDocument json = JsonDocument.Parse(data);
+        JsonElement results = json.RootElement.GetProperty("results");
+
+        return new SunriseSunset
+        {
+            CityId = cityId,
+            Sunrise = results.GetProperty("sunrise").GetString(),
+            Sunset = results.GetProperty("sunset").GetString(),
+            Date = date
+        };
+    }
+
+public SolarWatch ProcessSunrise(string data)
     {
         JsonDocument json = JsonDocument.Parse(data);
         JsonElement results = json.RootElement.GetProperty("results");

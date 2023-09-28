@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SolarWatch.Model;
 
 namespace SolarWatch.RepositoryPattern;
 
-public interface IRepository<T> where T : EntityBase
+public interface ISunriseSunsetRepository
 {
-    T? GetByID(int id);
-    void Add(T entity);
+    SunriseSunset? GetByIdAndDate(int cityId, DateTime date);
+    void Add(SunriseSunset entity);
     // void Delete(T entity);
     // void Update(T entity);
 }
