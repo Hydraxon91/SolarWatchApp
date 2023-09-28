@@ -1,8 +1,10 @@
-﻿namespace SolarWatch.RepositoryPattern;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace SolarWatch.RepositoryPattern;
 
 public interface IRepository<T> where T : EntityBase
 {
-    T GetByID(int id);
+    T? GetByID(int id);
     void Add(T entity);
     // void Delete(T entity);
     // void Update(T entity);
