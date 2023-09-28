@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using SolarWatch.Model;
 using SolarWatch.Service;
 
 namespace SolarWatch.Service;
@@ -12,6 +13,27 @@ public class JsonProcessor : IJsonProcessor
         string lat = json.RootElement[0].GetProperty("lat").GetDouble().ToString();
         string lon = json.RootElement[0].GetProperty("lon").GetDouble().ToString();
         return new Tuple<string, string>(lat, lon);
+    }
+
+    //SolarWatch5
+    public City ProcessCity(string data, int id)
+    {
+        JsonDocument json = JsonDocument.Parse(data);
+        var name = json.RootElement[0].GetProperty("name").GetDouble().ToString();
+        var lat = json.RootElement[0].GetProperty("lat").GetDouble();
+        var lon = json.RootElement[0].GetProperty("lon").GetDouble();
+        var country = json.RootElement[0].GetProperty("country").GetDouble().ToString();
+        string? state = json.RootElement[0].GetProperty("state").GetDouble().ToString();
+
+        return new City
+        {
+            Id = id,
+            Name = name,
+            Latitude = lat,
+            Longitude = lon,
+            Country = country,
+            State = state
+        };
     }
 
     public SolarWatch ProcessSunrise(string data)
