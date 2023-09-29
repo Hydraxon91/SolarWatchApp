@@ -115,56 +115,66 @@ public class SolarWatchController : ControllerBase
         if (dbCity == null)
         {
             _logger.LogInformation("City not found, using API to find it");
-            try
-            {
-                var longLatData = await _longitudeAndLatitudeProvider.GetCurrent(city);
-                var longLatProcessed = _jsonProcessor.ProcessLongLat(longLatData);
-                try
-                {
-                    var sunriseData = await _sunriseSunsetProvider.GetOnDate(longLatProcessed, date);
-                    var processCity = _jsonProcessor.ProcessCity(longLatData);
-                    var cityId = _cityRepository.Add(processCity);
-                    var sunriseSunset =
-                        _jsonProcessor.ProcessSunriseSunset(sunriseData, date, cityId);
-                    _sunriseSunsetRepository.Add(sunriseSunset);
-                    // return Ok(_jsonProcessor.ProcessSunrise(sunriseData));
-                    return Ok(sunriseSunset);
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(e, "Error getting SunriseSunset data");
-                    return NotFound("Error getting SunriseSunset data");
-                }
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, "Error getting LongLat data");
-                return NotFound("Error getting LongLat data");
-            }  
+            return await GetDataIfNoCity(city, date);
         }
 
         var dbSunriseSunsetData = _sunriseSunsetRepository.GetByIdAndDate(dbCity.Id, date);
         // return dbSunriseSunsetData != null ? dbSunriseSunsetData : NotFound("Error getting LongLat data, something went wrong");
         if (dbSunriseSunsetData == null)
         {
+            _logger.LogInformation("SolarWatchData not found, using API to find it");
+            return await GetDataIfSolarDataNotFound(dbCity, date);
+        }
+
+        return Ok(dbSunriseSunsetData);
+    }
+
+    private async Task<ActionResult<SunriseSunset>> GetDataIfNoCity(string city, DateTime date)
+    {
+        try
+        {
+            var longLatData = await _longitudeAndLatitudeProvider.GetCurrent(city);
+            var longLatProcessed = _jsonProcessor.ProcessLongLat(longLatData);
             try
             {
-                Tuple<string, string> dbCityLongLat = new Tuple<string, string>(dbCity.Longitude, dbCity.Latitude);
-                var sunriseData = await _sunriseSunsetProvider.GetOnDate(dbCityLongLat, date);
+                var sunriseData = await _sunriseSunsetProvider.GetOnDate(longLatProcessed, date);
+                var processCity = _jsonProcessor.ProcessCity(longLatData);
+                var cityId = _cityRepository.Add(processCity);
                 var sunriseSunset =
-                    _jsonProcessor.ProcessSunriseSunset(sunriseData, date, dbCity.Id);
+                    _jsonProcessor.ProcessSunriseSunset(sunriseData, date, cityId);
                 _sunriseSunsetRepository.Add(sunriseSunset);
-                // return Ok(_jsonProcessor.ProcessSunrise(sunriseData));
                 return Ok(sunriseSunset);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "Error getting SunriseSunset data in already existing city");
-                return NotFound("Error getting SunriseSunset data in already existing city");
+                _logger.LogError(e, "Error getting SunriseSunset data");
+                return NotFound("Error getting SunriseSunset data");
             }
         }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error getting LongLat data");
+            return NotFound("Error getting LongLat data");
+        }   
+    }
 
-        return Ok(dbSunriseSunsetData);
+    private async Task<ActionResult<SunriseSunset>> GetDataIfSolarDataNotFound(City dbCity, DateTime date)
+    {
+        try
+        {
+            Tuple<string, string> dbCityLongLat = new Tuple<string, string>(dbCity.Longitude, dbCity.Latitude);
+            var sunriseData = await _sunriseSunsetProvider.GetOnDate(dbCityLongLat, date);
+            var sunriseSunset =
+                _jsonProcessor.ProcessSunriseSunset(sunriseData, date, dbCity.Id);
+            _sunriseSunsetRepository.Add(sunriseSunset);
+            // return Ok(_jsonProcessor.ProcessSunrise(sunriseData));
+            return Ok(sunriseSunset);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Error getting SunriseSunset data in already existing city");
+            return NotFound("Error getting SunriseSunset data in already existing city");
+        }
     }
     
 }
