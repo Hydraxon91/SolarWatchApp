@@ -1,0 +1,13 @@
+﻿version: '3'
+services:
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "xXx_FreshNuts420_xXx"
+    ports:
+      - "1433:1433"
+  solarwatchapp: 
+    build: .
+    ports:
+      - "8080:80"

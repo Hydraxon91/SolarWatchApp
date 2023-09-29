@@ -15,4 +15,18 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /SolarWatch
 COPY --from=build-env /SolarWatch/out .
+
+# Add EF Core Tools
+RUN dotnet tool install --global dotnet-ef
+
+# Database Migrations (Apply migrations during container startup)
+# Create a shell script to run migrations and the application
+RUN echo "#!/bin/sh" > entrypoint.sh
+RUN echo "dotnet ef database update --context SolarWatchContext" >> entrypoint.sh
+RUN chmod +x entrypoint.sh
+
+# Use the shell script as the CMD
+CMD ["./entrypoint.sh"]
+
+
 ENTRYPOINT ["dotnet", "SolarWatch.dll"]
