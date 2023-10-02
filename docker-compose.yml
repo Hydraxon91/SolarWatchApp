@@ -1,13 +1,13 @@
-﻿version: '3'
+﻿version: "3.9"
 services:
-  ms-sql-server:
-    image: mcr.microsoft.com/mssql/server:latest
+  database:
+    image: mcr.microsoft.com/mssql/server
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "xXx_FreshNuts420_xXx"
+      SA_PASSWORD: "P@ssword123"
     ports:
       - "1433:1433"
-  solarwatchapp: 
-    build: .
+  solarwatchapp2:
+    image: solarwatchapp2:latest
     ports:
-      - "8080:80"
+      - "8082:80"

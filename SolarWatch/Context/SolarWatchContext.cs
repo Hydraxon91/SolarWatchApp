@@ -8,16 +8,14 @@ public class SolarWatchContext : DbContext
     public DbSet<City> Cities { get; set; }
     public DbSet<SunriseSunset> SunriseSunsets { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    public SolarWatchContext(DbContextOptions<SolarWatchContext> options) :base(options)
     {
-        optionsBuilder.UseSqlServer(
-            "Server=localhost,1433;Database=SolarWatch;User Id=sa;Password=xXx_FreshNuts420_xXx;TrustServerCertificate=True;");
+        
     }
-    
     // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     // {
     //     optionsBuilder.UseSqlServer(
-    //         "Server=ms-sql-server;Database=SolarWatch;User Id=sa;Password=xXx_FreshNuts420_xXx;MultipleActiveResultSets=true;TrustServerCertificate=True;");
+    //         "Server=database,1433;Database=SolarWatch;User Id=sa;Password=P@ssword123;TrustServerCertificate=True;");
     // }
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SolarWatch.Context;
 using SolarWatch.Model;
 using SolarWatch.RepositoryPattern;
@@ -13,12 +14,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<SolarWatchContext>();
-builder.Services.AddSingleton<ILongitudeAndLatitudeProvider, OpenWeatherMapApi>();
-builder.Services.AddSingleton<ISunriseSunsetProvider, SunriseSunsetApi>();
-builder.Services.AddSingleton<IJsonProcessor, JsonProcessor>();
-// builder.Services.AddSingleton<ICityRepository, CityRepository>();
-// builder.Services.AddSingleton<ISunriseSunsetRepository, SunriseSunsetRepository>();
+builder.Services.AddDbContext<SolarWatchContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SolarWatchDb")));;
+builder.Services.AddTransient<ILongitudeAndLatitudeProvider, OpenWeatherMapApi>();
+builder.Services.AddTransient<ISunriseSunsetProvider, SunriseSunsetApi>();
+builder.Services.AddTransient<IJsonProcessor, JsonProcessor>();
+builder.Services.AddTransient<ICityRepository, CityRepository>();
+builder.Services.AddTransient<ISunriseSunsetRepository, SunriseSunsetRepository>();
+
 
 
 var app = builder.Build();
@@ -30,7 +33,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
