@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SolarWatch.Context;
+using SolarWatch.Data;
 using SolarWatch.Model;
 using SolarWatch.RepositoryPattern;
 using SolarWatch.Service;
@@ -85,6 +86,8 @@ void ConfigureSwagger()
 void AddDbContext()
 {
     builder.Services.AddDbContext<SolarWatchContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("SolarWatchDb")));
+    builder.Services.AddDbContext<UsersContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("SolarWatchDb")));
 }
 

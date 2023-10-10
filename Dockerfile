@@ -35,6 +35,7 @@ RUN echo "Waiting for 10 seconds before running migrations..."
 RUN echo '  sleep 10'
 RUN echo "Running Entity Framework Core migrations..."
 RUN echo "dotnet ef database update --context SolarWatchContext" >> entrypoint.sh
+RUN echo "dotnet ef database update --context UserContext" >> entrypoint.sh
 RUN chmod +x entrypoint.sh
 
 # Use the shell script as the CMD
