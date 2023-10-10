@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Context;
 using SolarWatch.Model;
@@ -29,7 +30,7 @@ public class SolarWatchController : ControllerBase
         _sunriseSunsetRepository = sunriseSunsetRepository;
     }
     
-    [HttpGet("GetSunriseSunset")]
+    [HttpGet("GetSunriseSunset"), Authorize]
     public async Task<ActionResult<SunriseSunset>> GetSunrise([Required] string city, [Required] DateTime date)
     {
         Console.WriteLine($"GetSunriseSunset Running: {city}");
@@ -99,7 +100,7 @@ public class SolarWatchController : ControllerBase
         }
     }
 
-    [HttpGet("Test")]
+    [HttpGet("Test"), Authorize]
     public  ActionResult<SunriseSunset> GetTest()
     {
         return Ok("sunriseSunset");
