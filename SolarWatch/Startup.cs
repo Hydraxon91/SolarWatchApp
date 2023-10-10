@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SolarWatch.Context;
 using SolarWatch.RepositoryPattern;
@@ -23,11 +26,11 @@ namespace SolarWatch // Replace with your actual namespace
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var issuerSigningKey = Configuration["Authentication:IssuerSigningKey"];
             AddServices(services);
             ConfigureSwagger(services);
             AddDbContext(services);
-            }
+            AddAuthentication(services);
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -102,7 +105,32 @@ namespace SolarWatch // Replace with your actual namespace
         {
             services.AddDbContext<SolarWatchContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SolarWatchDb")));
+        }
 
+        private void AddAuthentication(IServiceCollection services)
+        {
+            var validIssuer = Configuration["Authentication:ValidIssuer"];
+            var validAudience = Configuration["Authentication:ValidAudience"];
+
+            var issuerSigningKey = Configuration["Authentication:IssuerSigningKey"];
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ClockSkew = TimeSpan.Zero,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = validIssuer,
+                        ValidAudience = validAudience,
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(issuerSigningKey)
+                            )
+                    };
+                });
         }
     }
 }
