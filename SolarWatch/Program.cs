@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -8,6 +9,7 @@ using SolarWatch.Data;
 using SolarWatch.Model;
 using SolarWatch.RepositoryPattern;
 using SolarWatch.Service;
+using SolarWatch.Service.Authentication;
 using WeatherApi.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,7 @@ AddServices();
 ConfigureSwagger();
 AddDbContext();
 AddAuthentication();
+AddIdentity();
 
 var app = builder.Build();
 
@@ -37,6 +40,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+AddRoles();
 
 app.Run();
 
@@ -93,6 +98,8 @@ void AddDbContext()
 
 void AddAuthentication()
 {
+    builder.Services.AddScoped<IAuthService, AuthService>();
+    
     var validIssuer = builder.Configuration["Authentication:ValidIssuer"];
     var validAudience = builder.Configuration["Authentication:ValidAudience"];
     var issuerSigningKey = builder.Configuration["Authentication:IssuerSigningKey"];
@@ -115,4 +122,43 @@ void AddAuthentication()
                 )
             };
         });
+}
+
+void AddIdentity()
+{
+    builder.Services
+        .AddIdentityCore<IdentityUser>(options =>
+        {
+            options.SignIn.RequireConfirmedAccount = false;
+            options.User.RequireUniqueEmail = true;
+            options.Password.RequireDigit = false;
+            options.Password.RequiredLength = 6;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<UsersContext>(); 
+}
+
+void AddRoles()
+{
+    using var scope = app.Services.CreateScope();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var tAdmin = CreateAdminRole(roleManager);
+    tAdmin.Wait();
+
+    var tUser = CreateUserRole(roleManager);
+    tUser.Wait();
+}
+
+async Task CreateAdminRole(RoleManager<IdentityRole> roleManager)
+{
+    await roleManager.CreateAsync(new IdentityRole("Admin"));
+}
+
+async Task CreateUserRole(RoleManager<IdentityRole> roleManager)
+{
+    await roleManager.CreateAsync(new IdentityRole("User"));
 }
