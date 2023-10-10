@@ -12,14 +12,17 @@ public class SolarWatchContext : DbContext
     {
         
     }
-    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    // {
-    //     optionsBuilder.UseSqlServer(
-    //         "Server=database,1433;Database=SolarWatch;User Id=sa;Password=P@ssword123;TrustServerCertificate=True;");
-    // }
-
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<City>().HasIndex(c => c.Name).IsUnique();
+        builder.Entity<City>()
+            .HasIndex(c => c.Name)
+            .IsUnique();
+        
+        builder.Entity<City>()
+            .HasMany(city => city.SunriseSunsets)  
+            .WithOne(sunriseSunset => sunriseSunset.City) 
+            .HasForeignKey(sunriseSunset => sunriseSunset.CityId)
+            .OnDelete(DeleteBehavior.Cascade); 
     }
 }

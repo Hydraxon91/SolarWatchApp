@@ -36,18 +36,21 @@ public class JsonProcessor : IJsonProcessor
         };
     }
 
-    public SunriseSunset ProcessSunriseSunset(string data, DateTime date, int cityId)
+    public SunriseSunset ProcessSunriseSunset(string data, DateTime date, int cityId, City city)
     {
         JsonDocument json = JsonDocument.Parse(data);
         JsonElement results = json.RootElement.GetProperty("results");
 
-        return new SunriseSunset
+        var sunRise = new SunriseSunset
         {
             CityId = cityId,
             Sunrise = results.GetProperty("sunrise").GetString(),
             Sunset = results.GetProperty("sunset").GetString(),
-            Date = date
+            Date = date,
+            City = city
         };
+        Console.WriteLine(sunRise.City.Name);
+        return sunRise;
     }
 
 public SolarWatch ProcessSunrise(string data)

@@ -8,7 +8,7 @@ public interface ISunriseSunsetRepository
     SunriseSunset? GetByIdAndDate(int cityId, DateTime date);
     void Add(SunriseSunset entity);
     // void Delete(T entity);
-    // void Update(T entity);
+    void Update(SunriseSunset oldEntity, SunriseSunset newEntity);
 }
 public abstract class EntityBase
 {

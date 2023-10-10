@@ -1,4 +1,5 @@
-﻿using SolarWatch.RepositoryPattern;
+﻿using System.Text.Json.Serialization;
+using SolarWatch.RepositoryPattern;
 
 namespace SolarWatch.Model;
 
@@ -10,4 +11,6 @@ public class City : EntityBase
     public string Longitude { get; init; }
     public string? State { get; init; }
     public string Country { get; init; }
+    [JsonIgnore]
+    public ICollection<SunriseSunset> SunriseSunsets { get; set; } = new List<SunriseSunset>();
 }

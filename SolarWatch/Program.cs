@@ -26,6 +26,8 @@ AddAuthentication();
 AddIdentity();
 
 var app = builder.Build();
+builder.Configuration.AddJsonFile("appsettings.json");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -99,9 +101,10 @@ void AddDbContext()
 void AddAuthentication()
 {
     builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<ITokenService, TokenService>();
     
-    var validIssuer = builder.Configuration["Authentication:ValidIssuer"];
-    var validAudience = builder.Configuration["Authentication:ValidAudience"];
+    var validIssuer = builder.Configuration["AuthenticationSettings:ValidIssuer"];
+    var validAudience = builder.Configuration["AuthenticationSettings:ValidAudience"];
     var issuerSigningKey = builder.Configuration["Authentication:IssuerSigningKey"];
     Console.WriteLine($"{validIssuer}, {validAudience}, {issuerSigningKey}");
     builder.Services

@@ -27,4 +27,24 @@ public class CityRepository : ICityRepository
         _dbContext.SaveChanges();
         return city.Id;
     }
+
+    public void AddSunriseSunsetToCity(City city, SunriseSunset sunriseSunset)
+    {
+        city.SunriseSunsets.Add(sunriseSunset);
+        _dbContext.SaveChanges();
+    }
+
+    public bool DeleteByName(string name)
+    {
+        var cityToDelete = _dbContext.Cities.FirstOrDefault(c => c.Name == name);
+
+        if (cityToDelete != null)
+        {
+            _dbContext.Cities.Remove(cityToDelete);
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        return false;
+    }
 }

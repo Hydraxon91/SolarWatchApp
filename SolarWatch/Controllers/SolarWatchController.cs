@@ -30,7 +30,7 @@ public class SolarWatchController : ControllerBase
         _sunriseSunsetRepository = sunriseSunsetRepository;
     }
     
-    [HttpGet("GetSunriseSunset"), Authorize]
+    [HttpGet("GetSunriseSunset"), Authorize(Roles = "Admin, User")]
     public async Task<ActionResult<SunriseSunset>> GetSunrise([Required] string city, [Required] DateTime date)
     {
         Console.WriteLine($"GetSunriseSunset Running: {city}");
@@ -50,6 +50,8 @@ public class SolarWatchController : ControllerBase
             return await GetDataIfSolarDataNotFound(dbCity, date);
         }
 
+        Console.WriteLine("------------------------------");
+        Console.WriteLine(dbSunriseSunsetData.City.Name);
         return Ok(dbSunriseSunsetData);
     }
 
@@ -65,8 +67,9 @@ public class SolarWatchController : ControllerBase
                 var processCity = _jsonProcessor.ProcessCity(longLatData);
                 var cityId = _cityRepository.Add(processCity);
                 var sunriseSunset =
-                    _jsonProcessor.ProcessSunriseSunset(sunriseData, date, cityId);
+                    _jsonProcessor.ProcessSunriseSunset(sunriseData, date, cityId, processCity);
                 _sunriseSunsetRepository.Add(sunriseSunset);
+                //_cityRepository.AddSunriseSunsetToCity(processCity ,sunriseSunset);
                 return Ok(sunriseSunset);
             }
             catch (Exception e)
@@ -89,8 +92,9 @@ public class SolarWatchController : ControllerBase
             Tuple<string, string> dbCityLongLat = new Tuple<string, string>(dbCity.Longitude, dbCity.Latitude);
             var sunriseData = await _sunriseSunsetProvider.GetOnDate(dbCityLongLat, date);
             var sunriseSunset =
-                _jsonProcessor.ProcessSunriseSunset(sunriseData, date, dbCity.Id);
+                _jsonProcessor.ProcessSunriseSunset(sunriseData, date, dbCity.Id, dbCity);
             _sunriseSunsetRepository.Add(sunriseSunset);
+            //_cityRepository.AddSunriseSunsetToCity(dbCity, sunriseSunset);
             return Ok(sunriseSunset);
         }
         catch (Exception e)
@@ -100,10 +104,62 @@ public class SolarWatchController : ControllerBase
         }
     }
 
-    [HttpGet("Test"), Authorize]
-    public  ActionResult<SunriseSunset> GetTest()
+    [HttpGet("Test"), Authorize(Roles = "User, Admin")]
+    public ActionResult<SunriseSunset> GetTest()
     {
         return Ok("sunriseSunset");
+    }
+
+    [HttpDelete("DeleteCityByName"), Authorize(Roles = "Admin")]
+    public ActionResult DeleteCityByName([Required] string name)
+    {
+        var result = _cityRepository.DeleteByName(name);
+        if (result)
+        {
+            return Ok($"Successfully deleted {name}");
+        }
+
+        return NotFound($"cannot find city by name: {name}");
+    }
+
+    [HttpPatch("UpdateCityDateSunriseSunset"), Authorize(Roles = "Admin")]
+    public async Task<ActionResult<SunriseSunset>> UpdateCityDateSunriseSunset([Required] string city,
+        [Required] DateTime oldDate, [Required] DateTime newDate)
+    {
+        var dbCity = _cityRepository.GetByName(city);
+        if (dbCity == null)
+        {
+            _logger.LogInformation("City not found, using API to find it");
+            return NotFound($"cannot find city by name: {city}");
+        }
+
+        var oldDbSunriseSunsetData = _sunriseSunsetRepository.GetByIdAndDate(dbCity.Id, oldDate);
+
+        if (oldDbSunriseSunsetData == null)
+        {
+            _logger.LogInformation("SolarWatchData not found, using API to find it");
+            return NotFound($"found city by name: {city}, but it has no date: {oldDate}");
+        }
+
+        
+        
+        var newSunriseSunsetData = await _sunriseSunsetProvider.GetOnDate(new Tuple<string, string>(dbCity.Longitude, dbCity.Latitude), newDate);
+        var newSunriseSunset =
+            _jsonProcessor.ProcessSunriseSunset(newSunriseSunsetData, newDate, dbCity.Id, dbCity);
+        
+        _sunriseSunsetRepository.Update(oldDbSunriseSunsetData, newSunriseSunset);
+
+        return Ok(oldDbSunriseSunsetData);
+    }
+
+    private async Task<ActionResult<SunriseSunset>> GetSunriseSunset(City dbCity, DateTime date)
+    {
+        Tuple<string, string> dbCityLongLat = new Tuple<string, string>(dbCity.Longitude, dbCity.Latitude);
+        var sunriseData = await _sunriseSunsetProvider.GetOnDate(dbCityLongLat, date);
+        var sunriseSunset =
+            _jsonProcessor.ProcessSunriseSunset(sunriseData, date, dbCity.Id, dbCity);
+
+        return sunriseSunset;
     }
     
 }

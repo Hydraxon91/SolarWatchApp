@@ -24,4 +24,16 @@ public class SunriseSunsetRepository : ISunriseSunsetRepository
         _dbContext.SaveChanges();
     }
 
+    public void Update(SunriseSunset oldEntity, SunriseSunset newEntity)
+    {
+        var existingEntity = _dbContext.SunriseSunsets.Find(oldEntity.Id);
+        if (existingEntity != null)
+        {
+            existingEntity.Date = newEntity.Date;
+            existingEntity.Sunrise = newEntity.Sunrise;
+            existingEntity.Sunset = newEntity.Sunset;
+            _dbContext.SaveChanges();
+        }
+    }
+
 }

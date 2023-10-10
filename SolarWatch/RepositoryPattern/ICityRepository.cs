@@ -11,4 +11,8 @@ public interface ICityRepository
     {
         public int Id { get; protected set; }
     }
+
+    void AddSunriseSunsetToCity(City city, SunriseSunset sunriseSunset);
+    bool DeleteByName(string name);
+    
 }
