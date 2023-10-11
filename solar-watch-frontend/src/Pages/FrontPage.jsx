@@ -15,6 +15,9 @@ export default function FrontPage({cookies, user, setUser}){
                 <div>
                     <p>Welcome {user["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]}!</p>
                     <button onClick={logout}>Logout</button>
+                    <Link to="/solar-watch">
+                        <button>SolarWatch</button>
+                    </Link>
                 </div>
             ):
             (
@@ -26,6 +29,7 @@ export default function FrontPage({cookies, user, setUser}){
                 <Link to="/login">
                     <button>Login</button>
                 </Link>
+                
             </div>
             )
            }

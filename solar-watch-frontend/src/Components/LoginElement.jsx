@@ -21,12 +21,10 @@ export default function LoginElement({cookies, user, setUser}){
         setUser(decoded);
         const expirationTimestamp = parseInt(decoded.exp, 10);
         //console.log(decoded)
-        //console.log(jwt_token)
+        console.log(jwt_token)
         const expirationDate = new Date(expirationTimestamp * 1000)
         //console.log(expirationDate);
-        cookies.set("jwt_authorization", jwt_token, {
-            path: '/', expires: expirationDate,
-        });
+        cookies.set("jwt_authorization", jwt_token, {expires: expirationDate});
         setToken("worked");
     }
 
@@ -49,7 +47,6 @@ export default function LoginElement({cookies, user, setUser}){
                 if (r.token) {
                     setToken(JSON.stringify("running login"));
                     login(r.token);
-                    
                 }
                 else {setToken("pail")}
             })
