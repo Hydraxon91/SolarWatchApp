@@ -31,7 +31,7 @@ export default function RegisterElement(){
 
     return(
         <>
-        <div className='dummy'>
+        <div className='registrationForm'>
         <input
                 type="text"
                 placeholder="Email"

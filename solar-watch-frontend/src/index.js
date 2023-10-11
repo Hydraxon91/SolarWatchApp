@@ -1,37 +1,59 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useState, useEffect } from "react";
+import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import {BrowserRouter, createBrowserRouter, RouterProvider, Route} from 'react-router-dom';
+import { BrowserRouter, createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 import RegisterPage from './Pages/RegisterPage';
 import FrontPage from './Pages/FrontPage';
+import LoginPage from './Pages/LoginPage';
+import Cookies from 'universal-cookie';
+import jwt from 'jwt-decode';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    errorElement: <FrontPage />,
-    
-    children: [
-      {
-        path: "/",
-        element: <FrontPage />,
-      },
-      {
-        path: "/registration",
-        element: <RegisterPage />,
-      }
-    ]
+const App = () => {
+  const cookies = new Cookies();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = cookies.get("jwt_authorization");
+    if (token) {
+      // Decode and set the user here based on the token
+      const decoded = decodeToken(token);
+      setUser(decoded);
+    }
+  }, [cookies]);
+
+  const decodeToken = (token) =>{
+    return jwt(token);
   }
-]);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      errorElement: <FrontPage />,
+      children: [
+        {
+          path: "/",
+          element: <FrontPage cookies={cookies} setUser={setUser} user={user}/>,
+        },
+        {
+          path: "/registration",
+          element: <RegisterPage />,
+        },
+        {
+          path: "/login",
+          element: <LoginPage cookies={cookies} setUser={setUser} user={user} />
+        }
+      ]
+    }
+  ]);
+
+  return (
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+root.render(<App />);
 reportWebVitals();

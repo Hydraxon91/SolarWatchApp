@@ -1,12 +1,12 @@
-import RegisterElement from "../Components/RegisterElement";
+import LoginElement from "../Components/LoginElement";
 import { Link } from 'react-router-dom';
 
-export default function RegisterPage(){
+export default function LoginPage(props){
 
     return(
            
         <div>
-            <RegisterElement></RegisterElement>
+            <LoginElement cookies={props.cookies} setUser={props.setUser} user={props.user}></LoginElement>
             <Link to="/">
                 <button>Frontpage</button>
             </Link>
