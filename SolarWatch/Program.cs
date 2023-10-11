@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using SolarWatch.Service;
 using SolarWatch.Service.Authentication;
 using WeatherApi.Service;
 
+var  myAllowSpecificOrigins = "MyPolicy";
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -26,7 +28,14 @@ AddAuthentication();
 AddIdentity();
 
 var app = builder.Build();
-builder.Configuration.AddJsonFile("appsettings.json");
+
+MigrateContexts();
+
+var environment = builder.Environment;
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)  // Load the default configuration
+    .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true);  // Load environment-specific configuration
+
 
 
 // Configure the HTTP request pipeline.
@@ -36,7 +45,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+
+
+app.UseHttpsRedirection();
+
+app.UseCors(myAllowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -51,6 +64,16 @@ void AddServices()
 {
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
+    
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: myAllowSpecificOrigins, policy =>
+        {
+            policy.WithOrigins("*")
+                .AllowAnyHeader()  
+                .AllowAnyMethod();  
+        });
+    });
     
     builder.Services.AddTransient<ILongitudeAndLatitudeProvider, OpenWeatherMapApi>();
     builder.Services.AddTransient<ISunriseSunsetProvider, SunriseSunsetApi>();
@@ -88,6 +111,24 @@ void ConfigureSwagger()
             }
         });
     });
+}
+
+void MigrateContexts()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var solarWatchContext = services.GetRequiredService<SolarWatchContext>();
+        var usersContext = services.GetRequiredService<UsersContext>();
+        if (solarWatchContext.Database.GetPendingMigrations().Any())
+        {
+            solarWatchContext.Database.Migrate();
+        }
+        if (usersContext.Database.GetPendingMigrations().Any())
+        {
+            usersContext.Database.Migrate();
+        }
+    }
 }
 
 void AddDbContext()

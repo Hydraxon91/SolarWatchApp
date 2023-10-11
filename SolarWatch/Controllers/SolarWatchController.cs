@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Context;
 using SolarWatch.Model;
@@ -9,6 +10,7 @@ using WeatherApi.Service;
 
 namespace SolarWatch.Controllers;
 
+[EnableCors("MyPolicy")]
 public class SolarWatchController : ControllerBase
 {
     private readonly ILogger<SolarWatchController> _logger;
@@ -104,7 +106,7 @@ public class SolarWatchController : ControllerBase
         }
     }
 
-    [HttpGet("Test"), Authorize(Roles = "User, Admin")]
+    [HttpGet("Secret")]
     public ActionResult<SunriseSunset> GetTest()
     {
         return Ok("sunriseSunset");

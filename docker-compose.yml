@@ -11,3 +11,6 @@ services:
     image: solarwatchapp2:latest
     ports:
       - "8082:80"
+    environment:
+      - ENVIRONMENT=Production 
+      - Authentication__IssuerSigningKey=!SuperSecretKey!

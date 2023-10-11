@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using SolarWatch.Service.Authentication;
 using WeatherApi.Contracts;
 
@@ -6,6 +7,7 @@ namespace SolarWatch.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors("MyPolicy")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -16,7 +18,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Register")]
-    public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
+    public async Task<ActionResult> Register(RegistrationRequest request)
     {
         if (!ModelState.IsValid)
         {
@@ -28,10 +30,10 @@ public class AuthController : ControllerBase
         if (!result.Success)
         {
             AddErrors(result);
-            return BadRequest(ModelState);  
+            return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName, result.Role, false));  
         }
 
-        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName, result.Role));
+        return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName, result.Role, true));
     }
 
     private void AddErrors(AuthResult result)
