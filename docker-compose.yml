@@ -13,4 +13,4 @@ services:
       - "8082:80"
     environment:
       - ENVIRONMENT=Production 
-      - Authentication__IssuerSigningKey=!SuperSecretKey!
+      - Authentication__IssuerSigningKey=!SuperSecretSecretKey!
