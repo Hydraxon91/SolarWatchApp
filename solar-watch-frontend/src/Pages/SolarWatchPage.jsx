@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import "../styles/lotty.css";
 
 export default function SolarWatchPage(props){
     //GetSunriseSunset?city=Budapest&date=1996-12-13
@@ -24,7 +25,7 @@ export default function SolarWatchPage(props){
 
     return(
            
-        <div>
+        <div className='page-element-container'>
             <button onClick={handleSubmit}>Send Get Request</button>
             {fetchData}
         </div>

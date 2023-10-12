@@ -7,6 +7,7 @@ import RegisterPage from './Pages/RegisterPage';
 import FrontPage from './Pages/FrontPage';
 import LoginPage from './Pages/LoginPage';
 import SolarWatchPage from "./Pages/SolarWatchPage";
+import Layout from "./Components/Layout";
 import Cookies from 'universal-cookie';
 import jwt from 'jwt-decode';
 
@@ -54,7 +55,9 @@ const App = () => {
 
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <Layout>
+        <RouterProvider router={router} />
+      </Layout>
     </React.StrictMode>
   );
 };
