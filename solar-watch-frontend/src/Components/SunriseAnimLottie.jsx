@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Lottie from 'lottie-react';
 import sunriseAnim from "../Animations/sunriseAnim.json";
+import '../styles/lotty.css';
 
 const sunriseFrame = 100;
 const middayFrame = 162;
@@ -9,36 +10,15 @@ const sunsetFrame = 50;
 
 const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
     const [stopFrame, setStopFrame] = useState(middayFrame);
-    // const [newStopFrame, setNewStopFrame] = useState(middayFrame);
     const [dayNightCycle, setDayNightCycle] = useState(false);
     const lottieRef = useRef(null);
 
-    const SetSunset = () => {
-        setNewStopFrame(sunsetFrame);
-    };
-
-    const SetSunrise = () => {
-        setNewStopFrame(sunriseFrame);
-    };
-
-    const SetNight = () => {
-        setNewStopFrame(nightFrame);
-    };
-
-    const SetMidday = () => {
-        setNewStopFrame(middayFrame);
-    };
-
     useEffect(() => {
-        //console.log(dayNightCycle);
         if (lottieRef.current) {
             const animationInterval = setInterval(() => {
                 const currentFrame = lottieRef.current.animationItem.currentFrame;
                 var test = false; //This prevents the second else if from running while UseState updates daynightcycle
-                console.log(dayNightCycle);
                 if (currentFrame >=100 && newStopFrame === sunriseFrame) {
-                    console.log(`currFrame: ${currentFrame}, stopFrame: ${newStopFrame}`);
-                    console.log("You want to circle around");
                     setDayNightCycle(true);
                     test = true; //This prevents the second else if from running while UseState updates daynightcycle
                     setStopFrame(nightFrame);
@@ -48,16 +28,13 @@ const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
                     setStopFrame(newStopFrame);
                     setDayNightCycle(false);
                 }
-                //console.log(`currFrame: ${currentFrame}, stopFrame: ${stopFrame}`);
                 if (dayNightCycle && Math.abs(currentFrame - stopFrame) <= 3.5) {
-                    console.log("should cycle around");
                     setStopFrame(sunriseFrame);
                     lottieRef.current.goToAndPlay(0, true);
                     setDayNightCycle(false);
                     clearInterval(animationInterval);
                 }
                 else if (!dayNightCycle && Math.abs(currentFrame - stopFrame) <= 2.5 && !test){
-                    console.log("reached destination");
                     lottieRef.current.pause();
                     clearInterval(animationInterval);
                     setDayNightCycle(false);
@@ -73,11 +50,9 @@ const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
             const currentFrame = lottieRef.current.animationItem.currentFrame;
 
             if (currentFrame < stopFrame) {
-                // console.log("going up ran");
                 lottieRef.current.setDirection(1); // Play forward
                 lottieRef.current.goToAndPlay(currentFrame, true);
             } else if (currentFrame > stopFrame) {
-                // console.log("going down ran");
                 lottieRef.current.setDirection(-1); // Play backward
                 lottieRef.current.goToAndPlay(currentFrame, true);
             }
@@ -85,16 +60,14 @@ const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
     }, [lottieRef, stopFrame]);
 
     return (
-        <div>
+        <div className='background-animation-container'>
             <Lottie
+                className='background-animation'
                 animationData={sunriseAnim}
                 lottieRef={lottieRef}
                 loop={false}
+                // preserveAspectRatio="xMinYMin slice"
             />
-            <button onClick={SetSunset}>Set sunset</button>
-            <button onClick={SetSunrise}>Set sunrise</button>
-            <button onClick={SetNight}>Set night</button>
-            <button onClick={SetMidday}>Set midday</button>
         </div>
     );
 };
