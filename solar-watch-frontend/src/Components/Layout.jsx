@@ -4,10 +4,10 @@ import sunriseAnim from "../Animations/sunriseAnim.json";
 import SunriseAnimLottie from './SunriseAnimLottie';
 import '../styles/lotty.css';
 
-const Layout = ({ children }) => (
+const Layout = ({ children, newStopFrame, setNewStopFrame }) => (
   <div className="curr-page">
     <div className="background-animation">
-      <SunriseAnimLottie />
+      <SunriseAnimLottie newStopFrame={newStopFrame} setNewStopFrame={setNewStopFrame}/>
     </div>
     {children}
   </div>
