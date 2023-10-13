@@ -22,7 +22,7 @@ export default function LoginPage(props){
       }, [navigate]);
 
     return(
-            <div className="page-element-container"  ref={containerRef}>
+            <div className="login-page-element-container" ref={containerRef}>
                 <LoginElement cookies={props.cookies} setUser={props.setUser} user={props.user}></LoginElement>
             </div>
         )

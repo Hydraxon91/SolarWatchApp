@@ -30,7 +30,8 @@ public class AuthController : ControllerBase
         if (!result.Success)
         {
             AddErrors(result);
-            return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName, result.Role, false));  
+            // return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName, result.Role, false));  
+            return BadRequest(ModelState);
         }
 
         return CreatedAtAction(nameof(Register), new RegistrationResponse(result.Email, result.UserName, result.Role, true));

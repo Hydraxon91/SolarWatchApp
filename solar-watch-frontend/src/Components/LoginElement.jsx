@@ -9,8 +9,8 @@ export default function LoginElement({cookies, setUser}){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [response, setResponse] = useState(null);
-    const [emailInputClass, setEmailInputClass] = useState('inputbox');
-    const [passwordInputClass, setPasswordInputClass] = useState('inputbox');
+    const [emailInputClass, setEmailInputClass] = useState('login-inputbox');
+    const [passwordInputClass, setPasswordInputClass] = useState('login-inputbox');
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const navigate = useNavigate();
     
@@ -48,8 +48,8 @@ export default function LoginElement({cookies, setUser}){
     };
 
     const InputClick = () => {
-        setEmailInputClass('inputbox');
-        setPasswordInputClass('inputbox');
+        setEmailInputClass('login-inputbox');
+        setPasswordInputClass('login-inputbox');
     }
 
     useEffect(()=>{
@@ -68,10 +68,10 @@ export default function LoginElement({cookies, setUser}){
             }
             else{
                 if (response['Bad credentials'][0] === 'Invalid email') {
-                    setEmailInputClass('inputbox wrong-credential');
+                    setEmailInputClass('login-inputbox wrong-credential');
                 }
                 else{
-                    setPasswordInputClass('inputbox wrong-credential');
+                    setPasswordInputClass('login-inputbox wrong-credential');
                 }
             }
         }
@@ -83,15 +83,15 @@ export default function LoginElement({cookies, setUser}){
             {showSuccessMessage && (
                 <>
                     <SuccessfullElement message={"Successfully logged in"}/>
-                    <div className="successoverlay" />
+                    <div className="login-successoverlay" />
                 </>
             )}
             <div>
                 <form>
                     <h2 className="login-text">Login</h2>
-                    <div className="inputboxholder">
+                    <div className="login-inputboxholder">
                         <div className={emailInputClass}>
-                            <input type="email" required onClick={InputClick} onChange={(e) => setEmail(e.target.value)}></input>
+                            <input type="text" required onClick={InputClick} onChange={(e) => setEmail(e.target.value)}></input>
                             <label for="emailInput">Email</label>
                             <h3 className="invalid-email-text">invalid email</h3>
                         </div>

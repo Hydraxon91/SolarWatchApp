@@ -1,11 +1,10 @@
-
-.page-element-container{
+.login-page-element-container{
     position: relative;
     z-index: 2;
     margin-left: auto;
     margin-right: auto;
     margin-top: 30vh;
-    height: 500px;
+    height: 550px;
     width: 450px;
 }
 
@@ -30,21 +29,21 @@
     text-align: center;
 }
 
-.inputboxholder{
+.login-inputboxholder{
     margin-bottom: 15%;
 }
 
-.inputbox{
+.login-inputbox{
     position: relative;
     margin: 30px 0;
     margin-bottom: 50px;
     width: 310px;
     border-bottom: 2px solid #fff;
 }
-.inputbox.wrong-credential {
+.login-inputbox.wrong-credential {
     border-bottom-color: red;
   }
-.inputbox label{
+.login-inputbox label{
     position: absolute;
     top: 75%;
     left: 5px;
@@ -54,7 +53,7 @@
     pointer-events: none;
     transition: .5s;
 }
-.inputbox.wrong-credential label {
+.login-inputbox.wrong-credential label {
     color: red;
 }
 
@@ -62,7 +61,7 @@ input:focus ~ label,
 input:valid ~ label{
     top: 0%;
 }
-.inputbox input{
+.login-inputbox input{
     width: 87%;
     height: 40px;
     background: transparent;
@@ -72,7 +71,7 @@ input:valid ~ label{
     color: #fff;
 }
 
-.inputbox.wrong-credential input {
+.login-inputbox.wrong-credential input {
     color: red;
     animation: shake 0.5s;
 }
@@ -84,8 +83,8 @@ input:valid ~ label{
     visibility: hidden;
 }
 
-.inputbox.wrong-credential .invalid-email-text,
-.inputbox.wrong-credential .invalid-password-text {
+.login-inputbox.wrong-credential .invalid-email-text,
+.login-inputbox.wrong-credential .invalid-password-text {
     color: rgba(255, 0, 0, 1);
     visibility: visible;
 }
@@ -134,7 +133,7 @@ input:valid ~ label{
     text-decoration: underline;
 }
 
-.successoverlay {
+.login-successoverlay {
     position: absolute;
     margin-top: 0;
     margin-left: 0;
