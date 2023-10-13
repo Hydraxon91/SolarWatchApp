@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react"
-import { json } from "react-router-dom";
+import "../styles/login.css";
 import jwt from 'jwt-decode';
+import { Link, useNavigate } from 'react-router-dom';
+import SuccessfullElement from "./SuccessfullElement";
 
-
-export default function LoginElement({cookies, user, setUser}){
+export default function LoginElement({cookies, setUser}){
     //console.log(user);
-    const [token, setToken] = useState('test');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const logout = () => {
-        setUser(null);
-        setToken(null);
-        cookies.remove("jwt_authorization");
-    }
+    const [response, setResponse] = useState(null);
+    const [emailInputClass, setEmailInputClass] = useState('inputbox');
+    const [passwordInputClass, setPasswordInputClass] = useState('inputbox');
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const navigate = useNavigate();
     
     const login = (jwt_token) => {
         const decoded = jwt(jwt_token);
@@ -25,7 +24,6 @@ export default function LoginElement({cookies, user, setUser}){
         const expirationDate = new Date(expirationTimestamp * 1000)
         //console.log(expirationDate);
         cookies.set("jwt_authorization", jwt_token, {expires: expirationDate});
-        setToken("worked");
     }
 
     const handleSubmit = () => {
@@ -44,45 +42,79 @@ export default function LoginElement({cookies, user, setUser}){
         })
             .then(res => res.json())
             .then(r => {
-                if (r.token) {
-                    setToken(JSON.stringify("running login"));
-                    login(r.token);
-                }
-                else {setToken("pail")}
+                setResponse(r);
             })
             .catch(err=>console.error(err))
     };
 
-    return(
-        <>
-        <div className='loginForm'>
-            {
-                user ? (
-                    <div>
-                        <p>Welcome {user["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]}!</p>
-                        <button onClick={logout}>Logout</button>
-                    </div>
-                ) : (
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)} // Update email state on change
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)} // Update password state on change
-                    />
-                    <button onClick={handleSubmit}>Send POST Request</button>
-                    {token}
-                </div>
-                )
+    const InputClick = () => {
+        setEmailInputClass('inputbox');
+        setPasswordInputClass('inputbox');
+    }
+
+    useEffect(()=>{
+
+    },[emailInputClass, passwordInputClass])
+    
+    useEffect(()=>{
+        if (response) {
+            if (response?.token) {
+                login(response.token);
+                setShowSuccessMessage(true);
+                setTimeout(() => {
+                    setShowSuccessMessage(false);
+                    navigate("/");
+                }, 3000);
             }
+            else{
+                if (response['Bad credentials'][0] === 'Invalid email') {
+                    setEmailInputClass('inputbox wrong-credential');
+                }
+                else{
+                    setPasswordInputClass('inputbox wrong-credential');
+                }
+            }
+        }
         
+    },[response])
+
+    return(
+        <div className='login-form'>
+            {showSuccessMessage && (
+                <>
+                    <SuccessfullElement message={"Successfully logged in"}/>
+                    <div className="successoverlay" />
+                </>
+            )}
+            <div>
+                <form>
+                    <h2 className="login-text">Login</h2>
+                    <div className="inputboxholder">
+                        <div className={emailInputClass}>
+                            <input type="email" required onClick={InputClick} onChange={(e) => setEmail(e.target.value)}></input>
+                            <label for="emailInput">Email</label>
+                            <h3 className="invalid-email-text">invalid email</h3>
+                        </div>
+                        <div className={passwordInputClass}>
+                            <input type="password" required onClick={InputClick} onChange={(e) => setPassword(e.target.value)}></input>
+                            <label for="">Password</label>
+                            <h3 className="invalid-password-text">invalid password</h3>
+                        </div>
+                    </div>
+                    <div className="forget">
+                            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"> Forgot Password?</a>
+                    </div>
+                    <button type="button" className="login-button" onClick={handleSubmit}>Login</button>
+                    <div className="register">
+                        <p>
+                            Don't have an account? 
+                            <Link to="/registration">
+                                <a> Register here!</a>
+                            </Link>
+                        </p>
+                    </div>
+                </form>
+            </div>
         </div>
-        </>
     )
 }

@@ -24,7 +24,6 @@ const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
                     setStopFrame(nightFrame);
                 }
                 else {
-                    console.log("You don't want to circle around");
                     setStopFrame(newStopFrame);
                     setDayNightCycle(false);
                 }

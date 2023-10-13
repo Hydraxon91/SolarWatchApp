@@ -1,0 +1,21 @@
+.success-element{
+    left:-20%;
+    
+    position:absolute;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    width: 140%;
+    height: 30%;
+
+    background: rgba(0, 0, 0, 0.758);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 10px;
+
+    font-family: serif;
+    font-size: 3em;
+    font-weight: 600;
+    color: #fff;
+    z-index: 2;
+}

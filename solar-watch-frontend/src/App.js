@@ -31,7 +31,7 @@ function App() {
     return (
         <BrowserRouter>
         <Layout user={user} newStopFrame={newStopFrame} setNewStopFrame={setNewStopFrame}>
-            <AppRoutes setUser={setUser} cookies={cookies} setNewStopFrame={setNewStopFrame} />
+            <AppRoutes user={user} setUser={setUser} cookies={cookies} setNewStopFrame={setNewStopFrame} />
         </Layout>
         </BrowserRouter>
     );

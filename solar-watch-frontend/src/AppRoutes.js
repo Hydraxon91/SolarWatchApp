@@ -10,7 +10,7 @@ const middayFrame = 162;
 const nightFrame = 364;
 const sunsetFrame = 50;
 
-function AppRoutes({ setUser, cookies, setNewStopFrame }) {
+function AppRoutes({ setUser, cookies, setNewStopFrame, user }) {
   const location = useLocation();
 
   useEffect(() => {
@@ -34,10 +34,10 @@ function AppRoutes({ setUser, cookies, setNewStopFrame }) {
 
   return (
         <Routes>
-          <Route exact path="/" element={<FrontPage/>} />
+          <Route exact path="/" element={<FrontPage setUser={setUser} cookies={cookies} user={user}/>} />
           <Route path="/registration" element={<RegisterPage/>} />
           <Route path="/login" element={<LoginPage setUser={setUser} cookies={cookies} />} />
-          <Route path="/solar-watch" element={<SolarWatchPage/>} />
+          <Route path="/solar-watch" element={<SolarWatchPage cookies={cookies}/>} />
         </Routes>
   );
 }
