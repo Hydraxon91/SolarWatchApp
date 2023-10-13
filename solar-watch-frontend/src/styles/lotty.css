@@ -2,28 +2,16 @@
     position: absolute;
     display: flex;
     justify-content: center;
-    /* flex-direction: column; */
-    /* top: 0;
-    left: 0; */
     width: 100vw;
     height: 100vh;
     z-index: 1;
 }
 
 .background-animation {
-    /* width: 100vw;
-    height: 100vh; */
-    aspect-ratio: 16 / 9;
     object-fit: fill;
     z-index: 1;
     position: absolute;
-    /* display: flex;
-    flex-direction: column; */
-    /* top: 0;
-    left: 0; */
     width: 100%;
-    /* height: 100%; */
-
   }
 
 .page-element-container{
@@ -43,27 +31,39 @@
     width: 100vw;
 }
 
-@media (min-aspect-ratio: 16/9){
+@media (min-aspect-ratio: 16/9) {
     .background-animation {
-        width: 100%;
+      width: 100%;
     }
-}
+  }
 
-@media (min-aspect-ratio: 13/9) and (max-aspect-ratio: 15/9){
+  @media (min-aspect-ratio: 4/3) and (max-aspect-ratio: 16/9) {
     .background-animation {
-        width: 150%;
+      width: 135%;
     }
-}
+  }
+  
+  @media (min-aspect-ratio: 1/1) and (max-aspect-ratio: 4/3) {
+    .background-animation {
+      width: 180%;
+    }
+  }
 
-@media (min-aspect-ratio: 7/9) and (max-aspect-ratio: 13/9){
+  @media (max-aspect-ratio: 1/1) {
     .background-animation {
-        width: 250%;
+      width: 240%;
     }
-}
+  }
 
-@media (max-aspect-ratio: 7/9){
+  @media (min-aspect-ratio: 9/16) and (max-aspect-ratio: 3/4) {
     .background-animation {
-        width: 400%;
+      width: 315%;
     }
-}
+  }
+
+  @media (min-aspect-ratio: 9/20) and (max-aspect-ratio: 9/16) {
+    .background-animation {
+      width: 395%;
+    }
+  }
 
