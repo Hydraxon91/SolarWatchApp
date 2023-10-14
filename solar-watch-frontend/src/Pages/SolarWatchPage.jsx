@@ -1,11 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SolarInfoElement from '../Components/SolarInfoElement';
 import "../styles/lotty.css";
 import "../styles/solarwatchpage.css";
 
 export default function SolarWatchPage({cookies, setNewStopFrame}){
-    //GetSunriseSunset?city=Budapest&date=1996-12-13
     const navigate = useNavigate();
     const [fetchCity, setFetchCity] = useState(null);
     const [fetchDate, setFetchDate] = useState(null);
@@ -18,14 +17,27 @@ export default function SolarWatchPage({cookies, setNewStopFrame}){
 
     const [loadingInvisible, setLoadingInvisible] = useState("invisible");
 
+    const containerRef = useRef();
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+          if (containerRef.current && !containerRef.current.contains(e.target)) {
+            navigate('/'); // Navigate to the front page when clicking outside the container
+          }
+        };
+    
+        document.addEventListener('mousedown', handleClickOutside);
+    
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, [navigate]);
+
+
     const handleSubmit = (e) => { 
         e.preventDefault(); 
-        console.log(fetchCity);
-        console.log(fetchDate);
         var jwtAuthorication = cookies.get("jwt_authorization");
         setSunriseData(null);
         setLoadingInvisible(null);
-        console.log(jwtAuthorication);
         fetch(`http://localhost:8082/GetSunriseSunset?city=${fetchCity}&date=${fetchDate}`, {
         method: 'GET',
         mode: 'cors',
@@ -60,7 +72,7 @@ export default function SolarWatchPage({cookies, setNewStopFrame}){
 
     return(
            
-        <div className='solar-page-element-container'>
+        <div className='solar-page-element-container' ref={containerRef}>
             <form className='solarwatch-request-form'  onSubmit={handleSubmit}>
                     <div className="data-inputboxholder">
                         <div className="city-input-box">
