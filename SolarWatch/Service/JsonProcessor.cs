@@ -46,6 +46,7 @@ public class JsonProcessor : IJsonProcessor
             CityId = cityId,
             Sunrise = results.GetProperty("sunrise").GetString(),
             Sunset = results.GetProperty("sunset").GetString(),
+            SolarNoon = results.GetProperty("solar_noon").GetString(),
             Date = date,
             City = city
         };

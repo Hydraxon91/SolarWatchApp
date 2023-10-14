@@ -16,19 +16,19 @@ function AppRoutes({ setUser, cookies, setNewStopFrame, user }) {
   useEffect(() => {
     switch (location.pathname) {
       case '/':
-        setNewStopFrame(middayFrame);
+        // setNewStopFrame(sunriseFrame);
         break;
       case '/solar-watch':
-        setNewStopFrame(sunriseFrame);
+        // setNewStopFrame(sunriseFrame);
         break;
       case '/login':
-        setNewStopFrame(nightFrame);
+        setNewStopFrame(sunriseFrame);
         break;
       case '/registration':
-        setNewStopFrame(sunsetFrame);
+        setNewStopFrame(nightFrame);
         break;
       default:
-        setNewStopFrame(182);
+        setNewStopFrame(sunriseFrame);
     }
   }, [location.pathname, setNewStopFrame]);
 
@@ -37,7 +37,7 @@ function AppRoutes({ setUser, cookies, setNewStopFrame, user }) {
           <Route exact path="/" element={<FrontPage setUser={setUser} cookies={cookies} user={user}/>} />
           <Route path="/registration" element={<RegisterPage/>} />
           <Route path="/login" element={<LoginPage setUser={setUser} cookies={cookies} />} />
-          <Route path="/solar-watch" element={<SolarWatchPage cookies={cookies}/>} />
+          <Route path="/solar-watch" element={<SolarWatchPage cookies={cookies} setNewStopFrame={setNewStopFrame}/>} />
         </Routes>
   );
 }

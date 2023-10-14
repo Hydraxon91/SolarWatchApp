@@ -10,6 +10,7 @@ public class SunriseSunset : EntityBase
     public int CityId { get; init; }
     public string Sunrise { get; set; }
     public string Sunset { get; set; }
+    public string SolarNoon { get; set; }
     public DateTime Date { get; set; }
     [JsonIgnore]
     public City City { get; set; }

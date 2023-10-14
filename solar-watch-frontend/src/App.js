@@ -14,7 +14,7 @@ const sunsetFrame = 50;
 function App() {
     const cookies = new Cookies();
     const [user, setUser] = useState(null);
-    const [newStopFrame, setNewStopFrame] = useState(middayFrame);
+    const [newStopFrame, setNewStopFrame] = useState(sunriseFrame);
     useEffect(() => {
         const token = cookies.get('jwt_authorization');
         if (token && !user) {

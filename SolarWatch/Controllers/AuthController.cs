@@ -7,7 +7,7 @@ namespace SolarWatch.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[EnableCors("MyPolicy")]
+[EnableCors("AllowLocalhost")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;

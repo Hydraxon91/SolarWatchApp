@@ -27,19 +27,19 @@ const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
                     setStopFrame(newStopFrame);
                     setDayNightCycle(false);
                 }
-                if (dayNightCycle && Math.abs(currentFrame - stopFrame) <= 3.5) {
+                if (dayNightCycle && Math.abs(currentFrame - stopFrame) <= 4) {
                     setStopFrame(sunriseFrame);
                     lottieRef.current.goToAndPlay(0, true);
                     setDayNightCycle(false);
                     clearInterval(animationInterval);
                 }
-                else if (!dayNightCycle && Math.abs(currentFrame - stopFrame) <= 2.5 && !test){
+                else if (!dayNightCycle && Math.abs(currentFrame - stopFrame) <= 4 && !test){
                     lottieRef.current.pause();
                     clearInterval(animationInterval);
                     setDayNightCycle(false);
                 }
                 
-            }, 100);
+            }, 90);
             return () => clearInterval(animationInterval);
         }
     }, [lottieRef, stopFrame, dayNightCycle, newStopFrame]);
@@ -47,7 +47,7 @@ const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
     useEffect(() => {
         if (lottieRef.current && lottieRef.current.animationItem) {
             const currentFrame = lottieRef.current.animationItem.currentFrame;
-
+            lottieRef.current.setSpeed(2);
             if (currentFrame < stopFrame) {
                 lottieRef.current.setDirection(1); // Play forward
                 lottieRef.current.goToAndPlay(currentFrame, true);

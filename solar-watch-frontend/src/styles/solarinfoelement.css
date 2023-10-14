@@ -1,0 +1,64 @@
+.solar-info-element{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    height: 600px;
+    width: 400px;
+    background-color: rgba(0, 255, 255, 0.384);
+    backdrop-filter: blur(10px);
+    z-index: 2;
+    border-radius: 15px;
+}
+
+
+.solar-info-element.sunrise{
+    background: rgb(37,139,189);
+background: linear-gradient(180deg, rgba(37,139,189,0.7027603277639181) 0%, rgba(205,137,57,0.6327323165594363) 23%, rgba(224,214,50,0.5851132689403886) 48%, rgba(62,142,45,0.5178863781840861) 77%, rgba(33,121,79,0.4002393193605567) 100%);
+}
+
+.solar-info-element.noon{
+    /* background-color: rgba(58, 134, 90, 0.384) */
+    background: rgb(2,0,36);
+    background: linear-gradient(180deg, rgba(2,0,36,0.7027603277639181) 0%, rgba(57,196,205,0.6327323165594363) 24%, rgba(236,240,219,0.5851132689403886) 56%, rgba(72,164,52,0.5178863781840861) 77%, rgba(36,135,103,0.4002393193605567) 100%);
+}
+
+.solar-info-element.sunset{
+    /* background-color: rgba(49, 32, 231, 0.384) */
+    background: linear-gradient(180deg, rgba(2,0,36,0.8904355687587535) 0%, rgba(55,11,129,0.8708277256214986) 14%, rgba(96,21,207,0.854021002932423) 21%, rgba(205,120,57,0.8120041962097339) 40%, rgba(175,194,99,0.7559817872461485) 52%, rgba(131,107,151,0.8736288460696778) 77%, rgba(84,12,207,0.761584028142507) 100%);
+}
+
+.solar-image{
+    width: 200px;
+    height: 200px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 40px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+}
+.solar-image.noon{
+    background-image: url("../Assets/icons/noon.png");
+    opacity: 0.8;
+}
+.solar-image.sunrise{
+    background-image: url("../Assets/icons/sunrise.png");
+    background-color: rgba(217, 140, 31, 0.313);
+    background-blend-mode: multiply;
+    opacity: 0.8;
+}
+.solar-image.sunset{
+    background-image: url("../Assets/icons/sunset.png");
+    /* opacity: 0.8; */
+}
+
+.solar-time{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-family: serif;
+    text-transform: capitalize;
+    font-size: 3.5rem;
+    font-weight: 550;
+    /* height: 100px; */
+}

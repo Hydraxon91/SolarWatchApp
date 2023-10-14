@@ -1,0 +1,88 @@
+.clock-animation-container{
+    padding: 0;
+    margin: 0;
+    /* box-sizing: border-box; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "poppins", sans-serif;
+    /* background: #283747; */
+    color: #fff;
+    position: relative;
+}
+
+.clock{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #2c84d6a1;
+    border: 2px solid rgba(255,255,255,0.25);
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.9);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clock.sunrise{
+    background-color: rgba(40, 156, 29, 0.1)
+}
+
+.clock.noon{
+    background-color: rgba(58, 134, 90, 0.1)
+}
+
+.clock.sunset{
+    background-color: rgba(49, 32, 231, 0.1)
+}
+
+.clock span{
+    position: absolute;
+    transform: rotate(calc(30deg*var(--i)));
+    inset: 12px;
+    text-align: center;
+}
+
+.clock span b{
+    transform: rotate(calc(-30deg*var(--i)));
+    display: inline-block;
+}
+
+.clock::before{
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #fff;
+    z-index: 2;
+}
+
+.hands{
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    align-items: flex-end;
+
+}
+
+.hands i{
+    position: absolute;
+    background: #fff;
+    width: 3px;
+    border-radius: 35px;
+}
+
+.hands.firsthand i{
+    height: 42px;
+    background: #de3163; 
+}
+.hands.secondhand i{
+    height: 47px;
+    background: #00a6ff; 
+}
+.hands.thirdhand i{
+    height: 51px;
+    background: #fff; 
+}
+

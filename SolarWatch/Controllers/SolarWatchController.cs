@@ -10,7 +10,7 @@ using WeatherApi.Service;
 
 namespace SolarWatch.Controllers;
 
-[EnableCors("MyPolicy")]
+[EnableCors("AllowLocalhost")]
 public class SolarWatchController : ControllerBase
 {
     private readonly ILogger<SolarWatchController> _logger;

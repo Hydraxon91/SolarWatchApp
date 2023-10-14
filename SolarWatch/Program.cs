@@ -50,6 +50,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(myAllowSpecificOrigins);
+app.UseCors("AllowLocalhost");
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -74,6 +75,14 @@ void AddServices()
             policy.WithOrigins("*")
                 .AllowAnyHeader()  
                 .AllowAnyMethod();  
+        });
+        
+        options.AddPolicy("AllowLocalhost", policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:3000") // Allow requests from your client's origin
+                .AllowAnyHeader()
+                .AllowAnyMethod();
         });
     });
     
