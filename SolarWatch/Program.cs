@@ -9,6 +9,7 @@ using SolarWatch.Context;
 using SolarWatch.Data;
 using SolarWatch.Model;
 using SolarWatch.RepositoryPattern;
+using SolarWatch.Seeders;
 using SolarWatch.Service;
 using SolarWatch.Service.Authentication;
 using WeatherApi.Service;
@@ -30,6 +31,7 @@ AddIdentity();
 var app = builder.Build();
 
 MigrateContexts();
+
 
 var environment = builder.Environment;
 builder.Configuration
@@ -61,6 +63,8 @@ AddRoles();
 
 AddAdmin();
 
+AddCityNames();
+
 app.Run();
 
 void AddServices()
@@ -91,6 +95,7 @@ void AddServices()
     builder.Services.AddTransient<IJsonProcessor, JsonProcessor>();
     builder.Services.AddTransient<ICityRepository, CityRepository>();
     builder.Services.AddTransient<ISunriseSunsetRepository, SunriseSunsetRepository>();
+    builder.Services.AddTransient<ICityNameRepository, CityNameRepository>();
 }
 
 void ConfigureSwagger()
@@ -239,4 +244,26 @@ void AddAdmin()
 {
     var tAdmin = CreateAdminIfNotExists();
     tAdmin.Wait();
+}
+
+async Task SeedCityNames()
+{
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var cityNameRepository = scope.ServiceProvider.GetRequiredService<ICityNameRepository>();
+        var cityNameSeeder = new CityNameSeeder(cityNameRepository);
+        await cityNameSeeder.SeedCityNamesAsync();
+        Console.WriteLine("City names seeded successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error seeding city names: {ex.Message}");
+    }
+}
+
+void AddCityNames()
+{
+    var aCityNames = SeedCityNames();
+    aCityNames.Wait();
 }

@@ -19,10 +19,12 @@ public class SolarWatchController : ControllerBase
     private readonly IJsonProcessor _jsonProcessor;
     private readonly ICityRepository _cityRepository;
     private readonly ISunriseSunsetRepository _sunriseSunsetRepository;
-
+    private readonly ICityNameRepository _cityNameRepository;
  
     public SolarWatchController(ILogger<SolarWatchController> logger, ILongitudeAndLatitudeProvider longitudeAndLatitudeProvider,
-        IJsonProcessor jsonProcessor, ISunriseSunsetProvider sunriseSunsetProvider, ICityRepository cityRepository, ISunriseSunsetRepository sunriseSunsetRepository)
+        IJsonProcessor jsonProcessor, ISunriseSunsetProvider sunriseSunsetProvider, 
+        ICityRepository cityRepository, ISunriseSunsetRepository sunriseSunsetRepository,
+        ICityNameRepository cityNameRepository)
     {
         _logger = logger;
         _longitudeAndLatitudeProvider = longitudeAndLatitudeProvider;
@@ -30,6 +32,7 @@ public class SolarWatchController : ControllerBase
         _sunriseSunsetProvider = sunriseSunsetProvider;
         _cityRepository = cityRepository;
         _sunriseSunsetRepository = sunriseSunsetRepository;
+        _cityNameRepository = cityNameRepository;
     }
     
     [HttpGet("GetSunriseSunset"), Authorize(Roles = "Admin, User")]
@@ -164,4 +167,24 @@ public class SolarWatchController : ControllerBase
         return sunriseSunset;
     }
     
+    [HttpGet("GetClosestCity"), Authorize(Roles = "Admin, User")]
+    public ActionResult<string> GetClosestCity([Required] string searchString)
+    {
+        Console.WriteLine($"GetClosestCity Running: {searchString}");
+
+        // Retrieve a list of all city names from the repository
+        var cityNames = _cityNameRepository.GetAllCityNames();
+
+        // Find the city name that best matches the search string
+        var closestCity = cityNames.FirstOrDefault(city => city.StartsWith(searchString, StringComparison.OrdinalIgnoreCase));
+
+        if (!string.IsNullOrEmpty(closestCity))
+        {
+            return closestCity;
+        }
+
+        return NoContent();
+    }
+    
+
 }
