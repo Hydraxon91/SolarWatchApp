@@ -14,7 +14,7 @@ const SunriseAnimLottie = ({newStopFrame, setNewStopFrame}) => {
     const lottieRef = useRef(null);
 
     useEffect(() => {
-        if (lottieRef.current) {
+        if (lottieRef?.current && lottieRef.current.animationItem) {
             const animationInterval = setInterval(() => {
                 const currentFrame = lottieRef.current.animationItem.currentFrame;
                 var test = false; //This prevents the second else if from running while UseState updates daynightcycle
