@@ -11,7 +11,7 @@ const middayFrame = 162;
 const nightFrame = 364;
 const sunsetFrame = 50;
 
-function AppRoutes({ setUser, cookies, setNewStopFrame, user, logout}) {
+function AppRoutes({ setUser, cookies, setNewStopFrame, user, logout, expirationTimer}) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ function AppRoutes({ setUser, cookies, setNewStopFrame, user, logout}) {
 
   return (
         <Routes>
-          <Route exact path="/" element={<FrontPage setUser={setUser} cookies={cookies} user={user} logout={logout}/>} />
+          <Route exact path="/" element={<FrontPage user={user} logout={logout} expirationTimer={expirationTimer}/>} />
           <Route path="/registration" element={<RegisterPage/>} />
           <Route path="/login" element={<LoginPage setUser={setUser} cookies={cookies} />} />
           {/* <Route path="/solar-watch" element={<SolarWatchPage cookies={cookies} setNewStopFrame={setNewStopFrame}/>} /> */}
