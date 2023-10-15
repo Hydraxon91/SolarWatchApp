@@ -1,4 +1,5 @@
-﻿using SolarWatch.RepositoryPattern;
+﻿using System.Text.RegularExpressions;
+using SolarWatch.RepositoryPattern;
 
 namespace SolarWatch.Seeders;
 
@@ -25,9 +26,10 @@ public class CityNameSeeder
             // Add city names to the repository
             foreach (var cityName in cityNames)
             {
-                if (!_cityNameRepository.GetAllCityNames().Contains(cityName))
+                var cleanedName = cityName.Trim('[', ']', ' ', '\n', '"');
+                if (!_cityNameRepository.GetAllCityNameStrings().Contains(cleanedName))
                 {
-                    await _cityNameRepository.AddCityNameAsync(cityName);
+                    await _cityNameRepository.AddCityNameAsync(cleanedName);
                 }
             }
             Console.WriteLine("City names seeded successfully.");

@@ -12,7 +12,12 @@ public class CityNameRepository : ICityNameRepository
         _context = context;
     }
 
-    public IEnumerable<string> GetAllCityNames()
+    public IEnumerable<CityName> GetAllCityNames()
+    {
+        return _context.CityNames.ToList();
+    }
+    
+    public IEnumerable<string> GetAllCityNameStrings()
     {
         return _context.CityNames.Select(city => city.Name).ToList();
     }

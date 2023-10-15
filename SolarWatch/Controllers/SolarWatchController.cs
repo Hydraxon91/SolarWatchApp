@@ -168,7 +168,7 @@ public class SolarWatchController : ControllerBase
     }
     
     [HttpGet("GetClosestCity"), Authorize(Roles = "Admin, User")]
-    public ActionResult<string> GetClosestCity([Required] string searchString)
+    public  ActionResult<CityName>  GetClosestCity([Required] string searchString)
     {
         Console.WriteLine($"GetClosestCity Running: {searchString}");
 
@@ -176,14 +176,14 @@ public class SolarWatchController : ControllerBase
         var cityNames = _cityNameRepository.GetAllCityNames();
 
         // Find the city name that best matches the search string
-        var closestCity = cityNames.FirstOrDefault(city => city.StartsWith(searchString, StringComparison.OrdinalIgnoreCase));
+        var closestCity = cityNames.FirstOrDefault(city => city.Name.StartsWith(searchString, StringComparison.OrdinalIgnoreCase));
 
-        if (!string.IsNullOrEmpty(closestCity))
+        if (closestCity !=null)
         {
-            return closestCity;
+            return Ok(closestCity);
         }
 
-        return NoContent();
+        return NotFound($"cannot find city starting with: {searchString}");
     }
     
 

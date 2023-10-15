@@ -99,8 +99,10 @@
     margin-bottom: calc(1.25vw + 1.25vh);
     /* width: 310px; */
     width: calc(8.1vw + 8.1vh);
-    border-bottom: 2px solid #fff;
+    /* border-bottom: 2px solid #ffffff; */
 }
+
+
 
 .date-input-box{
     position: absolute;
@@ -133,8 +135,22 @@ input:valid ~ label{
     visibility: hidden;
 }
 
-.date-input-box input,
-.city-input-box input{
+.date-input-box input{
+    /* width: 87%; */
+    width: calc(7vw + 7vh);
+    /* height: 40px; */
+    height: calc(1.15vw + 1.15vh);
+    background: transparent;
+    border: none;
+    /* font-size: 1.2em; */
+    font-size: calc(0.45vw + 0.45vh);
+    font-family: serif;
+    padding: 0 35px 0 5px;
+    color: #fff;
+}
+
+.city-input-box-input{
+    position: inherit;
     /* width: 87%; */
     width: calc(7vw + 7vh);
     /* height: 40px; */
@@ -145,6 +161,25 @@ input:valid ~ label{
     font-size: calc(0.45vw + 0.45vh);
     padding: 0 35px 0 5px;
     color: #fff;
+    z-index: 3;
+    text-transform: capitalize;
+}
+
+.city-input-suggestion{
+    display: flex;
+    /* background-color: orange; */
+    font-family: sans-serif;
+    align-items: center;
+    color: #fff;
+    position: inherit;
+    /* width: calc(7vw + 7vh); */
+    width: calc(8.1vw + 8.1vh);
+    /* height: 40px; */
+    height: calc(1.15vw + 1.15vh);
+    border-bottom: 2px solid #e4e4e4b5;
+    font-size: calc(0.45vw + 0.45vh);
+    padding: 0 0 0 5px;
+    z-index: 2;
 }
 
 .loading-div{

@@ -5,6 +5,7 @@ import "../styles/solarwatchpage.css";
 
 export default function SolarWatchElement({cookies, setNewStopFrame}){
     const [fetchCity, setFetchCity] = useState(null);
+    const [closestCity, setClosestCity] = useState(null);
     const [fetchDate, setFetchDate] = useState(null);
 
     const [fetchData, setFetchData] = useState(null);
@@ -31,9 +32,9 @@ export default function SolarWatchElement({cookies, setNewStopFrame}){
             'Authorization': 'Bearer ' + jwtAuthorication
         }
         })
-            .then(res => res.json())
-            .then(r => { setFetchData(r)})
-            .catch(err=>console.error(err))
+        .then(res => res.json())
+        .then(r => { setFetchData(r)})
+        .catch(err=>console.error(err))
     };
     const splitDataToString = (fullData) =>{
         return fullData.split(' ')[0];
@@ -53,13 +54,48 @@ export default function SolarWatchElement({cookies, setNewStopFrame}){
         }
     },[fetchData])
 
+    useEffect(()=>{
+        if (fetchCity?.length > 3) {
+            var jwtAuthorication = cookies.get("jwt_authorization");
+            fetch(`http://localhost:8082/GetClosestCity?searchString=${fetchCity}`, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/plain',
+                    'Authorization': 'Bearer ' + jwtAuthorication
+                }
+                })
+                .then(res => res.json())
+                .then(r => { 
+                    console.log(r)
+                    if (r && r?.name) {
+                        setClosestCity(r.name);
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    setClosestCity(null); // Handle the error and set closestCity to null
+                });
+          }
+          else if(fetchCity === closestCity || fetchCity?.length<3){
+            setClosestCity(null)
+          }
+    },[fetchCity])
+
     return(
            
         <div className='solar-page-element-container'>
             <form className='solarwatch-request-form'  onSubmit={handleSubmit}>
                     <div className="data-inputboxholder">
                         <div className="city-input-box">
-                            <input type="text" required onChange={(e) => setFetchCity(e.target.value)}></input>
+                            <input 
+                                className='city-input-box-input'
+                                type="text" 
+                                required 
+                                onChange={(e) => setFetchCity(e.target.value)}
+                            />
+                            <span className='city-input-suggestion'>{closestCity}</span>
                             <label for="">City</label>
                         </div>
                         <div className="date-input-box">
