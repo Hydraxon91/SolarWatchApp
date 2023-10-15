@@ -1,7 +1,7 @@
 .solar-page-element-container{
     position: relative;
-    /* display: flex; */
-    width: 100%;
+    width: 70%;
+    height: 85%;
     z-index: 2;
     margin-left: auto;
     margin-right: auto;
@@ -9,25 +9,26 @@
 }
 
 
-
-
 .solar-outer-container{
     margin-top: 5vh;
 }
+/* font-size: calc(0.5vw + 0.5vh);
+    width: calc(5.25vw + 5.25vh);
+    height: calc(5.25vw + 5.25vh); */
 
 .solar-info-container{
     display:flex;
-    width: 1400px;
+    width: 100%;
+    /* width: calc(15.75vw + 15.75vh); */
     flex-direction: row;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2vh;
+    /* margin-left: auto;
+    margin-right: auto; */
+    /* margin-top: 2vh; */
+    margin-top: calc(0.75vw + 0.75vh);
 }
 
 .solar-button-container{
     display: flex; 
-    /* width: 100vw;
-    height: 100px; */
     justify-content: center;
     align-items: center;
     margin-left: auto;
@@ -35,45 +36,24 @@
 }
 
 .req-date{
-    width: 1600px;
+    width: 100%;
+    /* width: calc(15.75vw + 15.75vh); */
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     font-family: serif;
     text-transform: capitalize;
-    font-size: 3.5rem;
+    /* font-size: 3.5rem; */
+    font-size: calc(1.45vw + 1.45vh);
     font-weight: 550;
 }
 
 .solarwatch-request-form{
     margin: auto;
-    position: relative;
-    display: flex;
-    height: 300px;
-    width: 600px;
-    background: rgba(0, 0, 0, 0.119);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    justify-content: center;
-}
-
-
-
-.submitfetch-button{
-    font-family: serif;
-    /* margin-top: 10%; */
-    width: 90%;
-    height: 40px;
-    border-radius: 40px;
-    background: #fff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 1.6em;
-    font-weight: 800;
-}
-
-.solarwatch-request-form{
+    /* height: 300px; */
+    height: calc(7.875vw + 7.875vh);
+    /* width: 600px; */
+    width: calc(15.75vw + 15.75vh);
     font-family: serif;
     position: relative;
     display: flex;
@@ -82,26 +62,69 @@
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255,255,255,0.5);
     border-radius: 25px;
+    border-radius: calc(1vw + 1vh);
     justify-content:center;
     align-items: center;
 }
 
+
+
+.submitfetch-button{
+    position: absolute;
+    bottom: calc(0.5vw + 0.5vh);
+    font-family: serif;
+    /* width: 90%; */
+    width: calc(14.2vw + 14.2vh);
+    /* height: 40px; */
+    height: calc(1.05vw + 1.05vh);
+    border-radius: 40px;
+    background: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    /* font-size: 1.6em; */
+    font-size: calc(0.83vw + 0.83vh);
+    font-weight: 800;
+}
+
+
+
 .city-input-box{
-    position: relative;
-    margin: 30px 0;
-    margin-bottom: 50px;
-    width: 310px;
+    position: absolute;
+    left: calc(4vw + 4vh);
+    top: calc(0.5vw + 0.5vh);
+    /* margin: 30px 0; */
+    margin: calc(0.75vw + 0.75vh) 0;
+    /* margin-bottom: 50px; */
+    margin-bottom: calc(1.25vw + 1.25vh);
+    /* width: 310px; */
+    width: calc(8.1vw + 8.1vh);
     border-bottom: 2px solid #fff;
 }
 
+.date-input-box{
+    position: absolute;
+    left: calc(4vw + 4vh);
+    top: calc(3vw + 3vh);
+    /* margin: 30px 0; */
+    margin: calc(0.75vw + 0.75vh) 0;
+    /* margin-bottom: 50px; */
+    margin-bottom: calc(1.25vw + 1.25vh);
+    /* width: 310px; */
+    width: calc(8.1vw + 8.1vh);
+    border-bottom: 2px solid #fff;
+}
+
+
+.date-input-box label,
 .city-input-box label{
     position: absolute;
-    top: -35%;
+    /* top: 30%; */
+    top: calc(0.35vw + 0.35vh);
     left: 5px;
-    /* transform: translateY(-100%); */
     color:#fff;
-    font-size: 1.2em;
-    /* pointer-events: none; */
+    /* font-size: 1.2em; */
+    font-size: calc(0.45vw + 0.45vh);
 }
 
 input:focus ~ label,
@@ -110,12 +133,16 @@ input:valid ~ label{
     visibility: hidden;
 }
 
+.date-input-box input,
 .city-input-box input{
-    width: 87%;
-    height: 40px;
+    /* width: 87%; */
+    width: calc(7vw + 7vh);
+    /* height: 40px; */
+    height: calc(1.15vw + 1.15vh);
     background: transparent;
     border: none;
-    font-size: 1.2em;
+    /* font-size: 1.2em; */
+    font-size: calc(0.45vw + 0.45vh);
     padding: 0 35px 0 5px;
     color: #fff;
 }
@@ -139,9 +166,7 @@ input:valid ~ label{
     animation-timing-function: linear; 
 }
 
-.loading-div.invisible{
-    visibility: hidden;
-}
+
 
 @keyframes spin {
     from {

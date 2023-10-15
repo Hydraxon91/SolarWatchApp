@@ -15,12 +15,26 @@ function App() {
     const cookies = new Cookies();
     const [user, setUser] = useState(null);
     const [newStopFrame, setNewStopFrame] = useState(sunriseFrame);
+
+    const logout = () => {
+        setUser(null);
+        cookies.remove("jwt_authorization");
+    }
+
     useEffect(() => {
         const token = cookies.get('jwt_authorization');
-        if (token && !user) {
-        // Decode and set the user here based on the token
-        const decoded = decodeToken(token);
-        setUser(decoded);
+        // if (token && !user) {
+        //     // Decode and set the user here based on the token
+        //     const decoded = decodeToken(token);
+        //     setUser(decoded);
+        // }
+
+        if (!token) {
+            setUser(null); // Set the user to null when there is no token
+        } else if (!user) {
+            // Decode and set the user here based on the token
+            const decoded = decodeToken(token);
+            setUser(decoded);
         }
     }, [cookies, user]);
 
@@ -30,8 +44,8 @@ function App() {
 
     return (
         <BrowserRouter>
-        <Layout user={user} newStopFrame={newStopFrame} setNewStopFrame={setNewStopFrame}>
-            <AppRoutes user={user} setUser={setUser} cookies={cookies} setNewStopFrame={setNewStopFrame} />
+        <Layout user={user} newStopFrame={newStopFrame} setNewStopFrame={setNewStopFrame} logout={logout}>
+            <AppRoutes user={user} setUser={setUser} cookies={cookies} setNewStopFrame={setNewStopFrame} logout={logout}/>
         </Layout>
         </BrowserRouter>
     );

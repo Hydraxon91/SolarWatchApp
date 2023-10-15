@@ -4,14 +4,7 @@ import "../styles/lotty.css";
 
 const targetFrame = 182;
 
-export default function FrontPage({cookies, user, setUser}){
-
-    const logout = () => {
-        setUser(null);
-        cookies.remove("jwt_authorization");
-    }
-
-
+export default function FrontPage({cookies, user, setUser, logout}){
     return(
         <div className="curr-page">
 

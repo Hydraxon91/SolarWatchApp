@@ -2,8 +2,10 @@
     position: relative;
     margin-left: auto;
     margin-right: auto;
-    height: 600px;
-    width: 400px;
+    /* height: 600px; */
+    height: calc(15.75vw + 15.75vh);
+    /* width: 400px; */
+    width: calc(10.5vw + 10.5vh);
     background-color: rgba(0, 255, 255, 0.384);
     backdrop-filter: blur(10px);
     z-index: 2;
@@ -28,11 +30,14 @@ background: linear-gradient(180deg, rgba(37,139,189,0.7027603277639181) 0%, rgba
 }
 
 .solar-image{
-    width: 200px;
-    height: 200px;
+    /* width: 200px;
+    height: 200px; */
+    width: calc(5.25vw + 5.25vh);
+    height: calc(5.25vw + 5.25vh);
     margin-right: auto;
     margin-left: auto;
-    margin-top: 40px;
+    /* margin-top: 40px; */
+    margin-top: calc(0.5vw + 0.5vh);
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 50%;
@@ -53,12 +58,15 @@ background: linear-gradient(180deg, rgba(37,139,189,0.7027603277639181) 0%, rgba
 }
 
 .solar-time{
-    margin-top: 25px;
-    margin-bottom: 25px;
+    margin-top: calc(0.75vw + 0.75vh);
+    
+    /* margin-bottom: 25px; */
+    margin-bottom: calc(0.75vw + 0.75vh);
     text-align: center;
     font-family: serif;
     text-transform: capitalize;
-    font-size: 3.5rem;
+    /* font-size: 3.5rem; */
+    font-size: calc(1.473vw + 1.473vh);
     font-weight: 550;
     /* height: 100px; */
 }

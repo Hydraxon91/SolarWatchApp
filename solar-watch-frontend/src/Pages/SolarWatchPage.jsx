@@ -16,6 +16,7 @@ export default function SolarWatchPage({cookies, setNewStopFrame}){
     const [date, setDate] = useState(null);
 
     const [loadingInvisible, setLoadingInvisible] = useState("invisible");
+    const [firstTimeLoading, setFirstTimeLoading] = useState(true);
 
     const containerRef = useRef();
     useEffect(() => {
@@ -38,6 +39,7 @@ export default function SolarWatchPage({cookies, setNewStopFrame}){
         var jwtAuthorication = cookies.get("jwt_authorization");
         setSunriseData(null);
         setLoadingInvisible(null);
+        setFirstTimeLoading(false);
         fetch(`http://localhost:8082/GetSunriseSunset?city=${fetchCity}&date=${fetchDate}`, {
         method: 'GET',
         mode: 'cors',
@@ -79,26 +81,27 @@ export default function SolarWatchPage({cookies, setNewStopFrame}){
                             <input type="text" required onChange={(e) => setFetchCity(e.target.value)}></input>
                             <label for="">City</label>
                         </div>
-                        <div className="city-input-box">
+                        <div className="date-input-box">
                             <input type="date" required onChange={(e) => setFetchDate(e.target.value)} value={fetchDate}></input>
-                            <label for="">Date</label>
                         </div>
                     </div>
                     <button type="submit" className="submitfetch-button">Send Get Request</button>
             </form>
             
             {
-                sunriseData ? (
-                    <div className='solar-outer-container'>
-                    <div className='req-date'>Here is the data for: {date}</div>
-                    <div className='solar-info-container'>
-                        <SolarInfoElement setNewStopFrame={setNewStopFrame} solarData={sunriseData} solarType={"sunrise"}></SolarInfoElement>
-                        <SolarInfoElement setNewStopFrame={setNewStopFrame} solarData={noonData} solarType={"noon"}></SolarInfoElement>
-                        <SolarInfoElement setNewStopFrame={setNewStopFrame} solarData={sunsetData} solarType={"sunset"}></SolarInfoElement>
-                    </div>
-                    </div>
-                ) : (
-                    <div className={`loading-div ${loadingInvisible}`}></div>
+                !firstTimeLoading &&(
+                    sunriseData ? (
+                        <div className='solar-outer-container'>
+                        <div className='req-date'>Here is the data for: {date}</div>
+                        <div className='solar-info-container'>
+                            <SolarInfoElement setNewStopFrame={setNewStopFrame} solarData={sunriseData} solarType={"sunrise"}></SolarInfoElement>
+                            <SolarInfoElement setNewStopFrame={setNewStopFrame} solarData={noonData} solarType={"noon"}></SolarInfoElement>
+                            <SolarInfoElement setNewStopFrame={setNewStopFrame} solarData={sunsetData} solarType={"sunset"}></SolarInfoElement>
+                        </div>
+                        </div>
+                    ) : (
+                        <div className={`loading-div`}></div>
+                    )
                 )
             }
         </div>

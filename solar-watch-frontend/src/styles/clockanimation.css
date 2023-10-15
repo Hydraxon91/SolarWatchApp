@@ -12,13 +12,21 @@
 }
 
 .clock{
-    width: 200px;
-    height: 200px;
+    font-size: calc(0.5vw + 0.5vh);
+    width: calc(5.25vw + 5.25vh);
+    height: calc(5.25vw + 5.25vh);
+    /* width: calc(5vw + 5vh);
+    height: calc(5vw + 5vh); */
+    /* padding: calc(1vw + 1vh); */
+    /* background-color: yellow; */
+    /* width: 200px;
+    height: 200px; */
+    /* width: 10em;
+    height: 10em; */
     border-radius: 50%;
     background: #2c84d6a1;
     border: 2px solid rgba(255,255,255,0.25);
     box-shadow: 0px 0px 15px rgba(0,0,0,0.9);
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,7 +47,8 @@
 .clock span{
     position: absolute;
     transform: rotate(calc(30deg*var(--i)));
-    inset: 12px;
+    /* inset: 12px; */
+    inset: calc(0.12vw + 0.12vh);
     text-align: center;
 }
 
@@ -51,8 +60,10 @@
 .clock::before{
     content: "";
     position: absolute;
-    width: 5px;
-    height: 5px;
+    width: calc(0.1vw + 0.1vh);
+    height: calc(0.1vw + 0.1vh);
+    /* width: 5px;
+    height: 5px; */
     border-radius: 50%;
     background: #fff;
     z-index: 2;
@@ -69,20 +80,24 @@
 .hands i{
     position: absolute;
     background: #fff;
-    width: 3px;
+    /* width: 3px; */
+    width: calc(0.075vw + 0.075vh);
     border-radius: 35px;
 }
 
 .hands.firsthand i{
-    height: 42px;
+    /* height: 42px; */
+    height: calc(1vw + 1vh);
     background: #de3163; 
 }
 .hands.secondhand i{
-    height: 47px;
+    /* height: 47px; */
+    height: calc(1.25vw + 1.25vh);
     background: #00a6ff; 
 }
 .hands.thirdhand i{
-    height: 51px;
+    /* height: 51px; */
+    height: calc(1.5vw + 1.5vh);
     background: #fff; 
 }
 
