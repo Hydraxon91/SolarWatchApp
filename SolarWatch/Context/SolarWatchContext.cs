@@ -7,7 +7,7 @@ public class SolarWatchContext : DbContext
 {
     public DbSet<City> Cities { get; set; }
     public DbSet<SunriseSunset> SunriseSunsets { get; set; }
-
+    public DbSet<CityName> CityNames { get; set; }
     public SolarWatchContext(DbContextOptions<SolarWatchContext> options) :base(options)
     {
         
@@ -23,6 +23,8 @@ public class SolarWatchContext : DbContext
             .HasMany(city => city.SunriseSunsets)  
             .WithOne(sunriseSunset => sunriseSunset.City) 
             .HasForeignKey(sunriseSunset => sunriseSunset.CityId)
-            .OnDelete(DeleteBehavior.Cascade); 
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<CityName>().HasIndex(c => c.Name).IsUnique();
     }
 }
