@@ -5,24 +5,8 @@ import "../styles/login.css";
 
 export default function LoginPage(props){
 
-    const navigate = useNavigate();
-    const containerRef = useRef();
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-          if (containerRef.current && !containerRef.current.contains(e.target)) {
-            navigate('/'); // Navigate to the front page when clicking outside the container
-          }
-        };
-    
-        document.addEventListener('mousedown', handleClickOutside);
-    
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
-        };
-      }, [navigate]);
-
     return(
-            <div className="login-page-element-container" ref={containerRef}>
+            <div className="login-page-element-container">
                 <LoginElement cookies={props.cookies} setUser={props.setUser} user={props.user}></LoginElement>
             </div>
         )
