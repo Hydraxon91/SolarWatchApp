@@ -16,13 +16,9 @@ export default function LoginElement({cookies, setUser}){
     
     const login = (jwt_token) => {
         const decoded = jwt(jwt_token);
-        
         setUser(decoded);
         const expirationTimestamp = parseInt(decoded.exp, 10);
-        //console.log(decoded)
-        console.log(jwt_token)
         const expirationDate = new Date(expirationTimestamp * 1000)
-        //console.log(expirationDate);
         cookies.set("jwt_authorization", jwt_token, {expires: expirationDate});
     }
 

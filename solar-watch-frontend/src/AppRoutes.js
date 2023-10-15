@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute component
 import FrontPage from './Pages/FrontPage';
 import RegisterPage from './Pages/RegisterPage';
 import LoginPage from './Pages/LoginPage';
@@ -12,6 +13,13 @@ const sunsetFrame = 50;
 
 function AppRoutes({ setUser, cookies, setNewStopFrame, user, logout}) {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(()=>{
+    if (!user) {
+      navigate('/')
+    }
+  },[user])
 
   useEffect(() => {
     switch (location.pathname) {
@@ -37,7 +45,11 @@ function AppRoutes({ setUser, cookies, setNewStopFrame, user, logout}) {
           <Route exact path="/" element={<FrontPage setUser={setUser} cookies={cookies} user={user} logout={logout}/>} />
           <Route path="/registration" element={<RegisterPage/>} />
           <Route path="/login" element={<LoginPage setUser={setUser} cookies={cookies} />} />
-          <Route path="/solar-watch" element={<SolarWatchPage cookies={cookies} setNewStopFrame={setNewStopFrame}/>} />
+          {/* <Route path="/solar-watch" element={<SolarWatchPage cookies={cookies} setNewStopFrame={setNewStopFrame}/>} /> */}
+          <Route
+            path="/solar-watch"
+            element={<ProtectedRoute element={<SolarWatchPage cookies={cookies} setNewStopFrame={setNewStopFrame} />} user={user} />}
+          />
         </Routes>
   );
 }

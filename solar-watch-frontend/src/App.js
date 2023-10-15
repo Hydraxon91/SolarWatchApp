@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import jwt from 'jwt-decode';
@@ -6,12 +6,8 @@ import Layout from './Components/Layout';
 import AppRoutes from './AppRoutes';
 
 const sunriseFrame = 100;
-const middayFrame = 162;
-const nightFrame = 364;
-const sunsetFrame = 50;
 
-
-function App() {
+export default function App() {
     const cookies = new Cookies();
     const [user, setUser] = useState(null);
     const [newStopFrame, setNewStopFrame] = useState(sunriseFrame);
@@ -23,16 +19,11 @@ function App() {
 
     useEffect(() => {
         const token = cookies.get('jwt_authorization');
-        // if (token && !user) {
-        //     // Decode and set the user here based on the token
-        //     const decoded = decodeToken(token);
-        //     setUser(decoded);
-        // }
-
+        
         if (!token) {
-            setUser(null); // Set the user to null when there is no token
+            setUser(null); 
+            // window.location = '/';
         } else if (!user) {
-            // Decode and set the user here based on the token
             const decoded = decodeToken(token);
             setUser(decoded);
         }
@@ -50,5 +41,3 @@ function App() {
         </BrowserRouter>
     );
 }
-
-export default App;

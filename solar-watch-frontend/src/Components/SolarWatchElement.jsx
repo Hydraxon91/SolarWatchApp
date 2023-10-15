@@ -1,5 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import SolarInfoElement from '../Components/SolarInfoElement';
 import "../styles/lotty.css";
 import "../styles/solarwatchpage.css";
