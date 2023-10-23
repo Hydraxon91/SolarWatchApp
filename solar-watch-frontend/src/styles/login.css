@@ -40,9 +40,7 @@
     width: 310px;
     border-bottom: 2px solid #fff;
 }
-.login-inputbox.wrong-credential {
-    border-bottom-color: red;
-  }
+
 .login-inputbox label{
     position: absolute;
     top: 75%;
