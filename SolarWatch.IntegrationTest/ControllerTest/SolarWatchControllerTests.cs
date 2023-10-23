@@ -75,12 +75,14 @@ public class SolarWatchControllerTests : IDisposable
     [Test]
     public async Task GetSunshineSunset_With_Mocked_City_And_Sunrise_Results()
     {
+        //setting up CityRepositoryMock
         var mockCity = new City[]
         {
             new() { Id = 0, Name = "Budapest" },
             new() { Id = 1, Name = "London" },
         };
         _factory.CityRepositoryMock.Setup(r => r.GetByName("Budapest")).Returns(mockCity[0]);
+        //setting up SunriseSunsetRepositoryMock
         var mockSunriseSunsets = new SunriseSunset[]
         {
             new() {Id = 0, 
@@ -93,26 +95,26 @@ public class SolarWatchControllerTests : IDisposable
             },
             new() {Id = 1, Sunrise = "London", Sunset = "London", CityId = 1, Date = DateTime.Today, SolarNoon = "London", City = new City()},
         };
-
         _factory.SunriseSunsetRepositoryMock.Setup(r => r.GetByIdAndDate(0, DateTime.Today))
             .Returns(mockSunriseSunsets[0]);
 
+        //Getting authentication --Needs db to run, I don't know how to do otherwise
         var email = "admin@admin.com";
         var password = "admin123";
         var loginResponse = await _client.PostAsync("/Auth/Login", new StringContent(JsonConvert.SerializeObject(new { email, password }), Encoding.UTF8, "application/json"));
         loginResponse.EnsureSuccessStatusCode();
         
+        //Getting token out of response 
         var responseContent = await loginResponse.Content.ReadAsStringAsync();
         var authResponse = JsonConvert.DeserializeObject<AuthResponse>(responseContent);
         var token = authResponse.Token;
         _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         
+        //Getting mock response
         var city = "Budapest";
         var date = DateTime.Now;
         var queryString = $"?city={city}&date={date:yyyy-MM-dd}";
         var response = await _client.GetAsync($"/GetSunriseSunset{queryString}");
-
-        //Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 
         var data = JsonConvert.DeserializeObject<SunriseSunset>(await response.Content.ReadAsStringAsync());
         Assert.That(data.Sunrise, Is.EqualTo("ShouldBeThis"));
