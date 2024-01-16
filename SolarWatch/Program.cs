@@ -237,6 +237,15 @@ namespace SolarWatch
                 {
                     await userManager.AddToRoleAsync(admin, "Admin");
                 }
+                else
+                {
+                    // Log error details
+                    Console.WriteLine("Error creating admin user:");
+                    foreach (var error in adminCreated.Errors)
+                    {
+                        Console.WriteLine($"Error: {error.Code}, Description: {error.Description}");
+                    }
+                }
             }
         }
 
